@@ -29,11 +29,11 @@ function formatAmount(value) {
   return normalizeAmount(value).toFixed(2);
 }
 
-function createPixPayload(itemName, amount) {
+function createPixPayload(amount) {
   return pixPayload({
     key: pixKey,
     amount: formatAmount(amount),
-    name: itemName || "SEU NOME",
+    name: "SIMONE E JOSÉ",
     city: "SAO PAULO",
     transactionId: "00"
   });
@@ -41,7 +41,7 @@ function createPixPayload(itemName, amount) {
 
 function renderPayment() {
   const { name, amount } = parseQueryString();
-  const pixPayload = createPixPayload(name, amount);
+  const pixPayload = createPixPayload(amount);
 
   document.getElementById("presentName").textContent = name;
   document.getElementById("paymentAmount").textContent = `R$ ${formatAmount(amount)}`;

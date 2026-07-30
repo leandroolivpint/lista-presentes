@@ -120,6 +120,8 @@ function createCard(item) {
   lista.appendChild(card);
 }
 
+const loadingState = document.getElementById("loading");
+
 function renderItems(items) {
   lista.innerHTML = "";
   items
@@ -127,10 +129,21 @@ function renderItems(items) {
     .forEach(createCard);
 }
 
+function showLoading() {
+  loadingState.classList.remove("hidden");
+  lista.classList.add("hidden");
+}
+
+function hideLoading() {
+  loadingState.classList.add("hidden");
+  lista.classList.remove("hidden");
+}
+
 let sheetCache = null;
 let updateInterval = null;
 
 function loadFromSheet() {
+  showLoading();
   const url = `${sheetCSVUrl}&cacheBust=${Date.now()}`;
 
   fetch(url)
@@ -142,6 +155,7 @@ function loadFromSheet() {
     })
     .then(text => {
       if (text === sheetCache) {
+        hideLoading();
         return;
       }
 
@@ -151,11 +165,13 @@ function loadFromSheet() {
         throw new Error("Planilha vazia ou sem dados válidos.");
       }
       renderItems(data);
+      hideLoading();
     })
     .catch(() => {
       if (!sheetCache) {
         renderItems(presentes);
       }
+      hideLoading();
     });
 }
 

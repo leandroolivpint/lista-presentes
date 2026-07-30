@@ -52,6 +52,31 @@ body {
   padding: 32px 24px 14px;
 }
 
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 48px 0;
+  color: #636B2F;
+}
+
+.spinner {
+  width: 54px;
+  height: 54px;
+  border: 6px solid rgba(99, 107, 47, 0.2);
+  border-top-color: #636B2F;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -75,6 +100,10 @@ body {
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 28px 64px rgba(85, 78, 163, 0.18);
+}
+
+.hidden {
+  display: none !important;
 }
 
 .card img {

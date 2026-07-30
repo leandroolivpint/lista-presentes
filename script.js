@@ -1,6 +1,7 @@
 const lista = document.getElementById("lista");
 const sheetCSVUrl = "https://docs.google.com/spreadsheets/d/1uT-vwbjaJS2iP_H3J_gBFvkObGwucRMOx1B7qZaRXT4/export?format=csv&gid=0";
-const defaultPix = "00020126580014BR.GOV.BCB.PIX0114SUA_CHAVE_PIX5204000053039865406450.005802BR5910SEU NOME6009SAO PAULO62070503***6304ABCD";
+const pixKey = "14841499636";
+const pixPayload = `00020126580014BR.GOV.BCB.PIX0114${pixKey}5204000053039865406450.005802BR5910SEU NOME6009SAO PAULO62070503***6304ABCD`;
 
 function parseCSV(text) {
   const rows = [];
@@ -86,15 +87,37 @@ function createCard(item) {
     <div class="status-tag ${isReserved ? 'reserved' : ''}">${status}${reservadoPor ? ` · ${reservadoPor}` : ''}</div>
     <h2>${item.Nome || item.nome || 'Presente'}</h2>
     <p class="valor">${item.Valor || item.valor || 'R$ 0,00'}</p>
+    <div class="pix-copy-group">
+      <span class="pix-label">PIX:</span>
+      <span class="pix-value">${pixKey}</span>
+      <button type="button" class="copy-pix">Copiar chave</button>
+    </div>
     <button ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Mostrar QR Code'}</button>
     <div class="qrcode"></div>
   `;
 
   const botao = card.querySelector("button");
   const qrDiv = card.querySelector(".qrcode");
+  const copyButton = card.querySelector(".copy-pix");
 
   let criado = false;
   let visivel = false;
+
+  copyButton.onclick = () => {
+    copyToClipboard(pixKey)
+      .then(() => {
+        copyButton.innerText = "Copiado!";
+        setTimeout(() => {
+          copyButton.innerText = "Copiar chave";
+        }, 1600);
+      })
+      .catch(() => {
+        copyButton.innerText = "Copiar manualmente";
+        setTimeout(() => {
+          copyButton.innerText = "Copiar chave";
+        }, 1600);
+      });
+  };
 
   botao.onclick = () => {
     if (isReserved) {
@@ -103,7 +126,7 @@ function createCard(item) {
 
     if (!criado) {
       new QRCode(qrDiv, {
-        text: item.pix || defaultPix,
+        text: pixPayload,
         width: 180,
         height: 180
       });

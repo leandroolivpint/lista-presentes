@@ -90,15 +90,16 @@ function parseAmount(value) {
 }
 
 function createCard(item) {
-  const status = item.Status || item.status || "LIVRE";
+  const statusRaw = item.Status || item.status || "";
+  const status = statusRaw.trim();
   const reservadoPor = item.ReservadoPor || item.reservadopor || "";
-  const isReserved = status.toLowerCase() !== "livre" && status !== "";
+  const isReserved = status !== "" && status.toLowerCase() !== "livre";
   const card = document.createElement("div");
   card.className = "card";
 
   card.innerHTML = `
     <img src="${item.Foto || item.Foto || item.imagem || item.imagem || 'https://picsum.photos/500/300?random'}" alt="Imagem de ${item.Nome || item.nome || 'Presente'}">
-    <div class="status-tag ${isReserved ? 'reserved' : ''}">${status}${reservadoPor ? ` · ${reservadoPor}` : ''}</div>
+    ${status ? `<div class="status-tag ${isReserved ? 'reserved' : ''}">${status}${reservadoPor ? ` · ${reservadoPor}` : ''}</div>` : ''}
     <h2>${item.Nome || item.nome || 'Presente'}</h2>
     <p class="valor">${item.Valor || item.valor || 'R$ 0,00'}</p>
     <button type="button" class="donate-btn" ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Dar esse presente'}</button>

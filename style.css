@@ -12,7 +12,7 @@ body {
 }
 
 .hero {
-  background: #f7f3e8;
+  background: #F7F4ED;
   color: #333333;
   padding: 68px 24px 42px;
   text-align: center;
@@ -20,7 +20,7 @@ body {
 }
 
 .hero-logo {
-  max-width: 580px;
+  max-width: 440px;
   margin: 0 auto;
 }
 

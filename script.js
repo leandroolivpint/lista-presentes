@@ -153,39 +153,10 @@ function createCard(item) {
     <div class="status-tag ${isReserved ? 'reserved' : ''}">${status}${reservadoPor ? ` · ${reservadoPor}` : ''}</div>
     <h2>${item.Nome || item.nome || 'Presente'}</h2>
     <p class="valor">${item.Valor || item.valor || 'R$ 0,00'}</p>
-    <div class="pix-copy-group">
-      <span class="pix-label">PIX:</span>
-      <span class="pix-value">${pixKey}</span>
-      <button type="button" class="copy-pix">Copiar chave</button>
-    </div>
     <button type="button" class="donate-btn" ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Dar esse presente'}</button>
-    <button type="button" class="toggle-qr" ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Mostrar QR Code'}</button>
-    <div class="qrcode"></div>
   `;
 
-  const qrButton = card.querySelector(".toggle-qr");
   const donateButton = card.querySelector(".donate-btn");
-  const qrDiv = card.querySelector(".qrcode");
-  const copyButton = card.querySelector(".copy-pix");
-
-  let criado = false;
-  let visivel = false;
-
-  copyButton.onclick = () => {
-    copyToClipboard(pixKey)
-      .then(() => {
-        copyButton.innerText = "Copiado!";
-        setTimeout(() => {
-          copyButton.innerText = "Copiar chave";
-        }, 1600);
-      })
-      .catch(() => {
-        copyButton.innerText = "Copiar manualmente";
-        setTimeout(() => {
-          copyButton.innerText = "Copiar chave";
-        }, 1600);
-      });
-  };
 
   donateButton.onclick = () => {
     if (isReserved) {
@@ -206,29 +177,6 @@ function createCard(item) {
           donateButton.innerText = "Dar esse presente";
         }, 1800);
       });
-  };
-
-  qrButton.onclick = () => {
-    if (isReserved) {
-      return;
-    }
-
-    if (!criado) {
-      new QRCode(qrDiv, {
-        text: createPixPayload(item.Valor || item.valor || '0'),
-        width: 180,
-        height: 180
-      });
-      criado = true;
-      visivel = true;
-      qrDiv.style.display = "flex";
-      qrButton.innerText = "Ocultar QR Code";
-      return;
-    }
-
-    visivel = !visivel;
-    qrDiv.style.display = visivel ? "flex" : "none";
-    qrButton.innerText = visivel ? "Ocultar QR Code" : "Mostrar QR Code";
   };
 
   lista.appendChild(card);

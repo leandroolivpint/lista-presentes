@@ -129,8 +129,13 @@ function renderItems(items) {
     .forEach(createCard);
 }
 
+let sheetCache = null;
+let updateInterval = null;
+
 function loadFromSheet() {
-  fetch(sheetCSVUrl)
+  const url = `${sheetCSVUrl}&cacheBust=${Date.now()}`;
+
+  fetch(url)
     .then(response => {
       if (!response.ok) {
         throw new Error("Não foi possível carregar a planilha.");
@@ -138,6 +143,11 @@ function loadFromSheet() {
       return response.text();
     })
     .then(text => {
+      if (text === sheetCache) {
+        return;
+      }
+
+      sheetCache = text;
       const data = parseCSV(text);
       if (!data.length) {
         throw new Error("Planilha vazia ou sem dados válidos.");
@@ -145,8 +155,22 @@ function loadFromSheet() {
       renderItems(data);
     })
     .catch(() => {
-      renderItems(presentes);
+      if (!sheetCache) {
+        renderItems(presentes);
+      }
     });
 }
 
-loadFromSheet();
+function startAutoRefresh() {
+  loadFromSheet();
+
+  if (updateInterval) {
+    clearInterval(updateInterval);
+  }
+
+  updateInterval = setInterval(() => {
+    loadFromSheet();
+  }, 1000 * 60 * 1); // atualiza a cada 1 minuto
+}
+
+startAutoRefresh();

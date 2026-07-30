@@ -108,6 +108,30 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(106, 90, 205, 0.12);
+  color: #4d3fc8;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.status-tag.reserved {
+  background: rgba(229, 62, 62, 0.12);
+  color: #c0392b;
+}
+
 .qrcode {
   margin-top: 18px;
   display: none;

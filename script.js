@@ -1,47 +1,41 @@
-const lista=document.getElementById("lista");
+const lista = document.getElementById("lista");
 
-presentes.forEach(item=>{
+presentes.forEach(item => {
+  const card = document.createElement("div");
+  card.className = "card";
 
-const card=document.createElement("div");
+  card.innerHTML = `
+    <img src="${item.imagem}" alt="Imagem de ${item.nome}">
+    <h2>${item.nome}</h2>
+    <p class="valor">${item.valor}</p>
+    <button>Mostrar QR Code</button>
+    <div class="qrcode"></div>
+  `;
 
-card.className="card";
+  const botao = card.querySelector("button");
+  const qrDiv = card.querySelector(".qrcode");
 
-card.innerHTML=`
+  let criado = false;
+  let visivel = false;
 
-<img src="${item.imagem}">
+  botao.onclick = () => {
+    if (!criado) {
+      new QRCode(qrDiv, {
+        text: item.pix,
+        width: 180,
+        height: 180
+      });
+      criado = true;
+      visivel = true;
+      qrDiv.style.display = "flex";
+      botao.innerText = "Ocultar QR Code";
+      return;
+    }
 
-<h2>${item.nome}</h2>
+    visivel = !visivel;
+    qrDiv.style.display = visivel ? "flex" : "none";
+    botao.innerText = visivel ? "Ocultar QR Code" : "Mostrar QR Code";
+  };
 
-<p class="valor">${item.valor}</p>
-
-<button>Mostrar QR Code</button>
-
-<div class="qrcode"></div>
-
-`;
-
-const botao=card.querySelector("button");
-
-const qrDiv=card.querySelector(".qrcode");
-
-let criado=false;
-
-botao.onclick=()=>{
-
-if(criado)return;
-
-new QRCode(qrDiv,{
-text:item.pix,
-width:180,
-height:180
-});
-
-criado=true;
-
-botao.innerText="QR Code Gerado";
-
-}
-
-lista.appendChild(card);
-
+  lista.appendChild(card);
 });

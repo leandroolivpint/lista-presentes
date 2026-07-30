@@ -1,5 +1,3 @@
-import { payload as pixPayload } from "https://esm.sh/pix-payload@1.0.4";
-
 const lista = document.getElementById("lista");
 const sheetCSVUrl = "https://docs.google.com/spreadsheets/d/1uT-vwbjaJS2iP_H3J_gBFvkObGwucRMOx1B7qZaRXT4/export?format=csv&gid=0";
 const pixKey = "14841499636";
@@ -76,30 +74,6 @@ function parseCSV(text) {
   });
 }
 
-function copyToClipboard(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text);
-  }
-
-  return new Promise((resolve, reject) => {
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    textarea.style.position = "fixed";
-    textarea.style.left = "-9999px";
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-
-    if (document.execCommand("copy")) {
-      document.body.removeChild(textarea);
-      resolve();
-    } else {
-      document.body.removeChild(textarea);
-      reject();
-    }
-  });
-}
-
 function parseAmount(value) {
   if (!value) {
     return 0;
@@ -113,17 +87,6 @@ function parseAmount(value) {
 
   const amount = parseFloat(normalized);
   return Number.isNaN(amount) ? 0 : amount;
-}
-
-function createPixPayload(amount) {
-  const formatted = parseAmount(amount).toFixed(2);
-  return pixPayload({
-    key: pixKey,
-    amount: formatted,
-    name: "SEU NOME",
-    city: "SAO PAULO",
-    transactionId: "00"
-  });
 }
 
 function createCard(item) {
@@ -148,20 +111,9 @@ function createCard(item) {
       return;
     }
 
-    const pixText = createPixPayload(item.Valor || item.valor || '0');
-    copyToClipboard(pixText)
-      .then(() => {
-        donateButton.innerText = "Copiado!";
-        setTimeout(() => {
-          donateButton.innerText = "Dar esse presente";
-        }, 1800);
-      })
-      .catch(() => {
-        donateButton.innerText = "Copiar manualmente";
-        setTimeout(() => {
-          donateButton.innerText = "Dar esse presente";
-        }, 1800);
-      });
+    const name = encodeURIComponent(item.Nome || item.nome || 'Presente');
+    const amount = encodeURIComponent(item.Valor || item.valor || 'R$ 0,00');
+    window.location.href = `payment.html?name=${name}&amount=${amount}`;
   };
 
   lista.appendChild(card);

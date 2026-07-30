@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento PIX</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="payment-page">
+  <main class="payment-panel">
+    <section class="payment-header">
+      <h1>Pagamento PIX</h1>
+      <p>Use o QR code ou copie o código abaixo para concluir o pagamento no app do seu banco.</p>
+      <p class="payment-summary"><strong id="presentName">Presente</strong> · <span id="paymentAmount">R$ 0,00</span></p>
+    </section>
+
+    <div class="payment-qr" id="paymentQr"></div>
+
+    <div class="payment-copy">
+      <div class="pix-code" id="pixCode">Carregando...</div>
+      <button class="copy-button" id="copyButton" type="button">Copiar código PIX</button>
+    </div>
+
+    <div class="payment-note" id="paymentNote">
+      Abra o aplicativo do seu banco, cole o código PIX acima e finalize o pagamento.
+    </div>
+  </main>
+
+  <script type="module" src="payment.js"></script>
+</body>
+</html>

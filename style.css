@@ -1,6 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap");
+
 body {
   margin: 0;
-  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-family: "Playfair Display", Georgia, serif;
   background: linear-gradient(180deg, #f5f5ff 0%, #eef2ff 60%, #ffffff 100%);
   color: #262626;
 }
@@ -10,7 +12,7 @@ body {
 }
 
 .hero {
-  background: linear-gradient(180deg, #f7f3e8 0%, #ede7d6 100%);
+  background: #f7f3e8;
   color: #333333;
   padding: 68px 24px 42px;
   text-align: center;
@@ -29,17 +31,19 @@ body {
 }
 
 .hero h1 {
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(3rem, 5vw, 4.2rem);
   margin: 0 0 16px;
   line-height: 1.05;
 }
 
 .hero p {
-  max-width: 680px;
+  max-width: 740px;
   margin: 0 auto;
   font-size: 1.05rem;
-  opacity: 0.93;
-  line-height: 1.8;
+  opacity: 0.88;
+  line-height: 1.85;
+  font-family: "Playfair Display", Georgia, serif;
 }
 
 .container {
@@ -103,6 +107,7 @@ body {
 }
 
 .card h2 {
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 1.32rem;
   margin: 0 0 12px;
 }
@@ -110,7 +115,7 @@ body {
 .valor {
   display: inline-flex;
   font-size: 1.18rem;
-  color: #27ae60;
+  color: #4b5827;
   font-weight: 700;
   margin-bottom: 14px;
 }

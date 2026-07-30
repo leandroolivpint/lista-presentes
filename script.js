@@ -1,3 +1,5 @@
+import { payload as pixPayload } from "https://esm.sh/pix-payload@1.0.4";
+
 const lista = document.getElementById("lista");
 const sheetCSVUrl = "https://docs.google.com/spreadsheets/d/1uT-vwbjaJS2iP_H3J_gBFvkObGwucRMOx1B7qZaRXT4/export?format=csv&gid=0";
 const pixKey = "14841499636";
@@ -113,32 +115,15 @@ function parseAmount(value) {
   return Number.isNaN(amount) ? 0 : amount;
 }
 
-function computeCrc16(text) {
-  let crc = 0xFFFF;
-  for (let i = 0; i < text.length; i++) {
-    crc ^= text.charCodeAt(i) << 8;
-    for (let j = 0; j < 8; j++) {
-      crc = (crc << 1) ^ (crc & 0x8000 ? 0x1021 : 0);
-      crc &= 0xFFFF;
-    }
-  }
-  return crc.toString(16).toUpperCase().padStart(4, "0");
-}
-
-function buildTag(id, value) {
-  return `${id}${String(value.length).padStart(2, "0")}${value}`;
-}
-
 function createPixPayload(amount) {
   const formatted = parseAmount(amount).toFixed(2);
-  const amountTag = buildTag("54", formatted);
-  const merchantAccountInfo = buildTag("00", "BR.GOV.BCB.PIX") + buildTag("01", pixKey);
-  const merchantAccountInfoTag = buildTag("26", merchantAccountInfo);
-  const merchantName = buildTag("59", "SEU NOME");
-  const merchantCity = buildTag("60", "SAO PAULO");
-  const payloadWithoutCrc = `000201${merchantAccountInfoTag}520400005303986${amountTag}5802BR${merchantName}${merchantCity}6304`;
-  const crc = computeCrc16(payloadWithoutCrc);
-  return `${payloadWithoutCrc}${crc}`;
+  return pixPayload({
+    key: pixKey,
+    amount: formatted,
+    name: "SEU NOME",
+    city: "SAO PAULO",
+    transactionId: "00"
+  });
 }
 
 function createCard(item) {

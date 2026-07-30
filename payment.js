@@ -33,7 +33,7 @@ function createPixPayload(amount) {
   return pixPayload({
     key: pixKey,
     amount: formatAmount(amount),
-    name: "SIMONE E JOSÉ",
+    name: "PRESENTE",
     city: "SAO PAULO",
     transactionId: "00"
   });

@@ -75,6 +75,51 @@ function parseCSV(text) {
   });
 }
 
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+
+  return new Promise((resolve, reject) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    if (document.execCommand("copy")) {
+      document.body.removeChild(textarea);
+      resolve();
+    } else {
+      document.body.removeChild(textarea);
+      reject();
+    }
+  });
+}
+
+function parseAmount(value) {
+  if (!value) {
+    return 0;
+  }
+
+  const normalized = String(value)
+    .replace(/R\$\s?/g, "")
+    .replace(/\./g, "")
+    .replace(/,/g, ".")
+    .trim();
+
+  const amount = parseFloat(normalized);
+  return Number.isNaN(amount) ? 0 : amount;
+}
+
+function createPixPayload(amount) {
+  const formatted = parseAmount(amount).toFixed(2);
+  const amountTag = `54${String(formatted.length).padStart(2, "0")}${formatted}`;
+  return `00020126580014BR.GOV.BCB.PIX0114${pixKey}5204000053039865406450.005802BR5910SEU NOME6009SAO PAULO${amountTag}6304ABCD`;
+}
+
 function createCard(item) {
   const status = item.Status || item.status || "LIVRE";
   const reservadoPor = item.ReservadoPor || item.reservadopor || "";
@@ -92,11 +137,13 @@ function createCard(item) {
       <span class="pix-value">${pixKey}</span>
       <button type="button" class="copy-pix">Copiar chave</button>
     </div>
-    <button ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Mostrar QR Code'}</button>
+    <button type="button" class="donate-btn" ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Dar esse presente'}</button>
+    <button type="button" class="toggle-qr" ${isReserved ? 'disabled' : ''}>${isReserved ? 'Reservado' : 'Mostrar QR Code'}</button>
     <div class="qrcode"></div>
   `;
 
-  const botao = card.querySelector("button");
+  const qrButton = card.querySelector(".toggle-qr");
+  const donateButton = card.querySelector(".donate-btn");
   const qrDiv = card.querySelector(".qrcode");
   const copyButton = card.querySelector(".copy-pix");
 
@@ -119,27 +166,48 @@ function createCard(item) {
       });
   };
 
-  botao.onclick = () => {
+  donateButton.onclick = () => {
+    if (isReserved) {
+      return;
+    }
+
+    const pixText = createPixPayload(item.Valor || item.valor || '0');
+    copyToClipboard(pixText)
+      .then(() => {
+        donateButton.innerText = "Copiado!";
+        setTimeout(() => {
+          donateButton.innerText = "Dar esse presente";
+        }, 1800);
+      })
+      .catch(() => {
+        donateButton.innerText = "Copiar manualmente";
+        setTimeout(() => {
+          donateButton.innerText = "Dar esse presente";
+        }, 1800);
+      });
+  };
+
+  qrButton.onclick = () => {
     if (isReserved) {
       return;
     }
 
     if (!criado) {
       new QRCode(qrDiv, {
-        text: pixPayload,
+        text: createPixPayload(item.Valor || item.valor || '0'),
         width: 180,
         height: 180
       });
       criado = true;
       visivel = true;
       qrDiv.style.display = "flex";
-      botao.innerText = "Ocultar QR Code";
+      qrButton.innerText = "Ocultar QR Code";
       return;
     }
 
     visivel = !visivel;
     qrDiv.style.display = visivel ? "flex" : "none";
-    botao.innerText = visivel ? "Ocultar QR Code" : "Mostrar QR Code";
+    qrButton.innerText = visivel ? "Ocultar QR Code" : "Mostrar QR Code";
   };
 
   lista.appendChild(card);

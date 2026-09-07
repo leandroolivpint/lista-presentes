@@ -178,8 +178,74 @@ body {
 }
 
 @media (max-width: 860px) {
+  .location-shell {
+    padding: 24px 20px;
+  }
+
   .location-grid {
     grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .location-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .event-location {
+    padding: 12px 12px 8px;
+  }
+
+  .location-shell {
+    padding: 16px 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 12px 28px rgba(59, 65, 48, 0.08);
+  }
+
+  .location-header h2 {
+    font-size: clamp(1.9rem, 8vw, 2.5rem);
+    line-height: 1.08;
+  }
+
+  .location-description {
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .location-card {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(138, 140, 120, 0.24);
+    box-shadow: 0 12px 24px rgba(85, 100, 66, 0.06);
+  }
+
+  .location-card h3 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .location-address {
+    margin-top: 12px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .maps-button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 16px;
+  }
+
+  .map-card {
+    min-height: 200px;
+    border-radius: 16px;
+  }
+
+  .map-card iframe {
+    min-height: 200px;
   }
 }
 

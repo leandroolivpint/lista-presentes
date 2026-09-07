@@ -155,6 +155,7 @@ body {
   letter-spacing: 0.02em;
   box-shadow: 0 12px 22px rgba(90, 96, 60, 0.18);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  align-self: flex-start;
 }
 
 .maps-button::before {
@@ -256,6 +257,7 @@ body {
     border-radius: 12px;
     align-self: stretch;
     justify-content: center;
+    display: flex;
   }
 
   .map-card {

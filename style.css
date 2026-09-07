@@ -140,7 +140,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: min(100%, 380px);
+  width: min(100%, 260px);
   max-width: 100%;
   margin: 18px auto 0;
   padding: 14px 18px;
@@ -239,7 +239,7 @@ body {
   }
 
   .maps-button {
-    width: min(100%, 320px);
+    width: min(100%, 240px);
     max-width: 100%;
     margin: 16px auto 0;
     padding: 12px 16px;

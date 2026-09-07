@@ -357,6 +357,50 @@ footer {
     padding: 42px 18px;
   }
 
+  .event-location {
+    padding: 16px 14px 8px;
+  }
+
+  .location-shell {
+    padding: 18px 16px;
+    border-radius: 20px;
+  }
+
+  .location-header h2 {
+    font-size: clamp(1.8rem, 9vw, 2.4rem);
+  }
+
+  .location-description {
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .location-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .location-card h3 {
+    font-size: 1.45rem;
+  }
+
+  .location-address {
+    font-size: 0.92rem;
+  }
+
+  .maps-button {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .map-card {
+    min-height: 200px;
+  }
+
+  .map-card iframe {
+    min-height: 200px;
+  }
+
   .container {
     padding: 24px 18px 12px;
   }

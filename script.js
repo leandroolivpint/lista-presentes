@@ -54,6 +54,8 @@ if (presenceForm) {
     try {
       const response = await fetch(presenceWebAppUrl, {
         method: "POST",
+        mode: "cors",
+        credentials: "omit",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"

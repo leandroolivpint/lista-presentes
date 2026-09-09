@@ -68,14 +68,6 @@
           <span>Av. Anel Rodoviário, 520</span>
           <span>Planalto, Capelinha - MG</span>
         </div>
-        <a
-          class="maps-button"
-          href="https://www.google.com/maps/search/?api=1&query=R%C3%A1dio+Aranas+Av.+Anel+Rodovi%C3%A1rio,+520,+Planalto,+Capelinha+MG"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Abrir no Google Maps
-        </a>
         <div class="map-card" aria-label="Mini mapa da recepção">
           <iframe
             src="https://www.google.com/maps?q=R%C3%A1dio%20Aranas%20Av.%20Anel%20Rodovi%C3%A1rio,%20520,%20Planalto,%20Capelinha%20MG&output=embed"
@@ -85,8 +77,48 @@
             title="Mapa da recepção"
           ></iframe>
         </div>
+
+        <a
+          class="maps-button"
+          href="https://www.google.com/maps/search/?api=1&query=R%C3%A1dio+Aranas+Av.+Anel+Rodovi%C3%A1rio,+520,+Planalto,+Capelinha+MG"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Abrir Google Maps
+        </a>
       </article>
     </div>
+  </div>
+</section>
+
+<section class="confirmation-section" aria-labelledby="confirmacao-titulo">
+  <div class="confirmation-shell">
+    <div class="confirmation-header">
+      <p class="eyebrow">Confirmação de presença</p>
+      <h2 id="confirmacao-titulo">Você estará conosco?</h2>
+      <p>Preencha o nome dos convidados que estão confirmando e selecione se irão ao evento.</p>
+    </div>
+
+    <form id="presence-form" class="presence-form" novalidate>
+      <label class="field" for="guest-name">
+        <span>Nome dos convidados</span>
+        <input id="guest-name" name="guest-name" type="text" placeholder="Ex.: Ana e João" maxlength="200" required>
+      </label>
+
+      <div class="attendance-options" role="radiogroup" aria-label="Confirmação de presença">
+        <label class="option">
+          <input type="radio" name="presence" value="sim" checked>
+          <span>Sim, irei</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="presence" value="nao">
+          <span>Não, não irei</span>
+        </label>
+      </div>
+
+      <button type="submit" class="confirm-button">Confirmar presença</button>
+      <p id="form-status" class="form-status" aria-live="polite"></p>
+    </form>
   </div>
 </section>
 

@@ -1,6 +1,90 @@
 const lista = document.getElementById("lista");
 const sheetCSVUrl = "https://docs.google.com/spreadsheets/d/1uT-vwbjaJS2iP_H3J_gBFvkObGwucRMOx1B7qZaRXT4/export?format=csv&gid=0";
+const presenceWebAppUrl = window.PRESENCE_WEBAPP_URL || "COLOQUE_A_URL_DO_WEB_APP_AQUI";
 const pixKey = "14841499636";
+
+function setFormStatus(message, isError = false) {
+  const status = document.getElementById("form-status");
+  if (!status) {
+    return;
+  }
+
+  status.textContent = message;
+  status.classList.toggle("error", isError);
+  status.classList.toggle("success", !isError && message.length > 0);
+}
+
+const presenceForm = document.getElementById("presence-form");
+
+if (presenceForm) {
+  presenceForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const guestNameInput = document.getElementById("guest-name");
+    const guestName = guestNameInput.value.trim();
+    const selectedAnswer = document.querySelector('input[name="presence"]:checked');
+
+    if (!guestName) {
+      setFormStatus("Informe o nome dos convidados antes de confirmar.", true);
+      guestNameInput.focus();
+      return;
+    }
+
+    if (!selectedAnswer) {
+      setFormStatus("Selecione se você irá ou não ao evento.", true);
+      return;
+    }
+
+    if (!presenceWebAppUrl || presenceWebAppUrl.includes("COLOQUE_A_URL_DO_WEB_APP_AQUI")) {
+      setFormStatus("Configure a URL do Web App do Google antes de enviar a confirmação.", true);
+      return;
+    }
+
+    const submitButton = presenceForm.querySelector("button[type='submit']");
+    const payload = {
+      nome: guestName,
+      confirmacao: selectedAnswer.value,
+      data: new Date().toISOString()
+    };
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Enviando...";
+    setFormStatus("Enviando confirmação...");
+
+    try {
+      const response = await fetch(presenceWebAppUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Não foi possível salvar a confirmação.");
+      }
+
+      const result = await response.json().catch(() => ({}));
+
+      if (result.success === false) {
+        throw new Error(result.message || "A confirmação falhou ao ser salva.");
+      }
+
+      presenceForm.reset();
+      setFormStatus("Confirmação enviada com sucesso! Obrigado por responder.", false);
+      const firstRadio = document.querySelector('input[name="presence"][value="sim"]');
+      if (firstRadio) {
+        firstRadio.checked = true;
+      }
+    } catch (error) {
+      setFormStatus(error.message || "Não foi possível enviar a confirmação. Tente novamente.", true);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Confirmar presença";
+    }
+  });
+}
 
 function parseCSV(text) {
   const rows = [];

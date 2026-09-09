@@ -52,26 +52,15 @@ if (presenceForm) {
     setFormStatus("Enviando confirmação...");
 
     try {
-      const response = await fetch(presenceWebAppUrl, {
+      await fetch(presenceWebAppUrl, {
         method: "POST",
-        mode: "cors",
-        credentials: "omit",
+        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
         body: JSON.stringify(payload)
       });
-
-      if (!response.ok) {
-        throw new Error("Não foi possível salvar a confirmação.");
-      }
-
-      const result = await response.json().catch(() => ({}));
-
-      if (result.success === false) {
-        throw new Error(result.message || "A confirmação falhou ao ser salva.");
-      }
 
       presenceForm.reset();
       setFormStatus("Confirmação enviada com sucesso! Obrigado por responder.", false);

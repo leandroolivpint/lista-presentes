@@ -1,6 +1,6 @@
 const lista = document.getElementById("lista");
 const sheetCSVUrl = "https://docs.google.com/spreadsheets/d/1uT-vwbjaJS2iP_H3J_gBFvkObGwucRMOx1B7qZaRXT4/export?format=csv&gid=0";
-const presenceWebAppUrl = window.PRESENCE_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbxtaETd6V6uNCj6qgwHiDmS2YGFqskaYNkOP6kJSoNCy8FjVx3G5N0CylDn2Va9dfv2/exec";
+const presenceWebAppUrl = "https://script.google.com/macros/s/AKfycbxtaETd6V6uNCj6qgwHiDmS2YGFqskaYNkOP6kJSoNCy8FjVx3G5N0CylDn2Va9dfv2/exec";
 const pixKey = "14841499636";
 
 function setFormStatus(message, isError = false) {
